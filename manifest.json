@@ -1,0 +1,18 @@
+{
+  "name": "gantt-chart",
+  "label": "Gantt Chart",
+  "type": "widget",
+  "version": "1.12.0",
+  "exbVersion": "1.12.0",
+  "author": "Raluca Nicola",
+  "description": "A widget to display data in a Gantt chart.",
+  "copyright": "",
+  "license": "http://www.apache.org/licenses/LICENSE-2.0",
+  "publishMessages": ["DATA_RECORDS_SELECTION_CHANGE"],
+  "properties": {},
+  "translatedLocales": ["en", "es"],
+  "defaultSize": {
+    "width": 300,
+    "height": 300
+  }
+}
