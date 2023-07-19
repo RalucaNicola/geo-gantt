@@ -1,0 +1,25 @@
+{
+  "name": "gantt-chart",
+  "version": "1.0.0",
+  "description": "An Experience Builder widget for displaying Gantt charts",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RalucaNicola/gantt-chart-widget.git"
+  },
+  "author": "Raluca Nicola",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RalucaNicola/gantt-chart-widget/issues"
+  },
+  "homepage": "https://github.com/RalucaNicola/gantt-chart-widget#readme",
+  "dependencies": {
+    "vis-timeline": "^7.7.2"
+  }
+}

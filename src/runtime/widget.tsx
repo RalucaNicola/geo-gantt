@@ -17,8 +17,9 @@ import {
 import defaultI18nMessages from "./translations/default";
 import styled from "@emotion/styled";
 import { Button } from "jimu-ui";
-import Timeline from "./Timeline";
+
 import { useEffect } from "react";
+import TimelineComponent from "./TimelineComponent";
 
 const query = {
   where: "1=1",
@@ -68,42 +69,6 @@ export default function Widget(props: AllWidgetProps<WidgetProps>) {
     }
   }, [dataSource, dataSourceStatus]);
 
-  const renderData = () => {
-    return (
-      <div className="d-flex flex-column">
-        {records.map((r, i) => {
-          const name = r.getFieldValue("Name");
-          const id = r.getId();
-          const isSelected = dataSource
-            .getSelectedRecordIds()
-            .includes(id.toString());
-          return (
-            <Item className="d-flex">
-              <Button
-                key={i}
-                aria-pressed={isSelected}
-                size="sm"
-                className="flex-grow-0 flex-shrink-0 w-25"
-                type={isSelected ? "primary" : "secondary"}
-                onClick={() => {
-                  MessageManager.getInstance().publishMessage(
-                    new DataRecordsSelectionChangeMessage(props.id, [r])
-                  );
-                  dataSource.selectRecordById(id.toString());
-                }}
-              >
-                {name}
-              </Button>
-              {relatedRecords.hasOwnProperty(id) ? (
-                <Timeline features={relatedRecords[id].features}></Timeline>
-              ) : null}
-            </Item>
-          );
-        })}
-      </div>
-    );
-  };
-
   return (
     <Container className="jimu-widget p-3">
       <Header>
@@ -126,7 +91,10 @@ export default function Widget(props: AllWidgetProps<WidgetProps>) {
             }}
           ></DataSourceComponent>
           {records && relatedRecords ? (
-            renderData()
+            <TimelineComponent
+              records={records}
+              relatedRecords={relatedRecords}
+            ></TimelineComponent>
           ) : (
             <div>
               {props.intl.formatMessage({
