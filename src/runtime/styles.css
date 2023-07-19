@@ -1,4 +1,5 @@
 .vis-inner {
   width: 100%;
   height: 60px;
+  padding: 0 !important;
 }

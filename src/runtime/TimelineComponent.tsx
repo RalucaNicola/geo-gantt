@@ -19,7 +19,7 @@ const Button = styled.button`
   padding: 0 3px;
   &:hover,
   &.selected {
-    background-color: #ccc;
+    background-color: #cfb6f0;
   }
 `;
 
@@ -60,8 +60,11 @@ export default function TimelineComponent({
       const { groups, items } = generateDataSet(records, relatedRecords);
       const options = {
         orientation: "top",
+        verticalScroll: true,
+        zoomKey: "ctrlKey",
+        stack: true,
+        maxHeight: "100%",
         groupTemplate: (data, element) => {
-          console.log(data.id.toString(), selectedId);
           ReactDOM.render(
             <Button
               onClick={(evt) => {
@@ -79,5 +82,5 @@ export default function TimelineComponent({
       new Timeline(divRef.current, items, groups, options);
     }
   }, [divRef]);
-  return <div ref={divRef}></div>;
+  return <div style={{ height: "100%" }} ref={divRef}></div>;
 }

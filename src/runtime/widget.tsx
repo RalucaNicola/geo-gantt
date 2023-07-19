@@ -38,6 +38,8 @@ export default function Widget(props: AllWidgetProps<WidgetProps>) {
 
   const Container = styled.div`
     overflow: auto;
+    display: flex;
+    flex-direction: column;
   `;
 
   const Header = styled.div`
@@ -67,12 +69,12 @@ export default function Widget(props: AllWidgetProps<WidgetProps>) {
     <Container className="jimu-widget p-3">
       <Header>
         {props.intl.formatMessage({
-          id: "_widgetLabel",
-          defaultMessage: defaultI18nMessages._widgetLabel,
+          id: "header",
+          defaultMessage: defaultI18nMessages.header,
         })}
       </Header>
       {dsConfigured ? (
-        <div>
+        <div style={{ flex: 1, overflow: "auto" }}>
           <DataSourceComponent
             useDataSource={props.useDataSources[0]}
             query={query}
