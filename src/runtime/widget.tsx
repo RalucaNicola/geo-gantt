@@ -94,7 +94,9 @@ export default function Widget(props: AllWidgetProps<WidgetProps>) {
               >
                 {name}
               </Button>
-              <Timeline relatedRecords={relatedRecords} id={id}></Timeline>
+              {relatedRecords.hasOwnProperty(id) ? (
+                <Timeline features={relatedRecords[id].features}></Timeline>
+              ) : null}
             </Item>
           );
         })}
