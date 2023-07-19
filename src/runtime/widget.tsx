@@ -13,10 +13,10 @@ import {
   WidgetProps,
   jsx,
 } from "jimu-core";
+import "./styles.css";
 
 import defaultI18nMessages from "./translations/default";
 import styled from "@emotion/styled";
-import { Button } from "jimu-ui";
 
 import { useEffect } from "react";
 import TimelineComponent from "./TimelineComponent";
@@ -37,13 +37,7 @@ export default function Widget(props: AllWidgetProps<WidgetProps>) {
   const [relatedRecords, setRelatedRecords] = React.useState(null);
 
   const Container = styled.div`
-    background-color: ${props.theme.colors.palette.light[100]};
-    box-shadow: ${props.theme.arcgis.boxShadow};
     overflow: auto;
-  `;
-
-  const Item = styled.div`
-    margin-top: ${props.theme.sizes[2]};
   `;
 
   const Header = styled.div`
@@ -94,6 +88,19 @@ export default function Widget(props: AllWidgetProps<WidgetProps>) {
             <TimelineComponent
               records={records}
               relatedRecords={relatedRecords}
+              onGroupSelected={(id) => {
+                MessageManager.getInstance().publishMessage(
+                  new DataRecordsSelectionChangeMessage(props.id, [
+                    dataSource.getRecordById(id),
+                  ])
+                );
+                dataSource.selectRecordById(id);
+              }}
+              selectedId={
+                dataSource.getSelectedRecordIds().length > 0
+                  ? dataSource.getSelectedRecordIds()[0]
+                  : null
+              }
             ></TimelineComponent>
           ) : (
             <div>

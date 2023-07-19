@@ -8,6 +8,20 @@ import {
   Timeline,
 } from "vis-timeline/standalone";
 import { DataSet } from "vis-data/standalone";
+import ReactDOM from "react-dom";
+import styled from "@emotion/styled";
+
+const Button = styled.button`
+  border: none;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0 3px;
+  &:hover,
+  &.selected {
+    background-color: #ccc;
+  }
+`;
 
 function generateDataSet(records, relatedRecords) {
   const groups = new DataSet() as DataSetDataGroup;
@@ -33,19 +47,36 @@ function generateDataSet(records, relatedRecords) {
   return { items, groups };
 }
 
-export default function TimelineComponent({ records, relatedRecords }) {
+export default function TimelineComponent({
+  records,
+  relatedRecords,
+  onGroupSelected,
+  selectedId,
+}) {
   const divRef = useRef<HTMLDivElement>();
 
   useEffect(() => {
     if (divRef.current) {
       const { groups, items } = generateDataSet(records, relatedRecords);
-      console.log(groups.getDataSet(), items.getDataSet());
-
-      // Configuration for the Timeline
       const options = {
         orientation: "top",
+        groupTemplate: (data, element) => {
+          console.log(data.id.toString(), selectedId);
+          ReactDOM.render(
+            <Button
+              onClick={(evt) => {
+                onGroupSelected(data.id);
+              }}
+            >
+              {data.content}
+            </Button>,
+            element
+          );
+          return null;
+        },
       };
-      const timeline = new Timeline(divRef.current, items, groups, options);
+
+      new Timeline(divRef.current, items, groups, options);
     }
   }, [divRef]);
   return <div ref={divRef}></div>;
