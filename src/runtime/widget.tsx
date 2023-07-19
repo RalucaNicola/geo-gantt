@@ -13,12 +13,13 @@ import {
   WidgetProps,
   jsx,
 } from "jimu-core";
+import "./styles.css";
 
 import defaultI18nMessages from "./translations/default";
 import styled from "@emotion/styled";
-import { Button } from "jimu-ui";
-import Timeline from "./Timeline";
+
 import { useEffect } from "react";
+import TimelineComponent from "./TimelineComponent";
 
 const query = {
   where: "1=1",
@@ -36,13 +37,9 @@ export default function Widget(props: AllWidgetProps<WidgetProps>) {
   const [relatedRecords, setRelatedRecords] = React.useState(null);
 
   const Container = styled.div`
-    background-color: ${props.theme.colors.palette.light[100]};
-    box-shadow: ${props.theme.arcgis.boxShadow};
     overflow: auto;
-  `;
-
-  const Item = styled.div`
-    margin-top: ${props.theme.sizes[2]};
+    display: flex;
+    flex-direction: column;
   `;
 
   const Header = styled.div`
@@ -68,52 +65,16 @@ export default function Widget(props: AllWidgetProps<WidgetProps>) {
     }
   }, [dataSource, dataSourceStatus]);
 
-  const renderData = () => {
-    return (
-      <div className="d-flex flex-column">
-        {records.map((r, i) => {
-          const name = r.getFieldValue("Name");
-          const id = r.getId();
-          const isSelected = dataSource
-            .getSelectedRecordIds()
-            .includes(id.toString());
-          return (
-            <Item className="d-flex">
-              <Button
-                key={i}
-                aria-pressed={isSelected}
-                size="sm"
-                className="flex-grow-0 flex-shrink-0 w-25"
-                type={isSelected ? "primary" : "secondary"}
-                onClick={() => {
-                  MessageManager.getInstance().publishMessage(
-                    new DataRecordsSelectionChangeMessage(props.id, [r])
-                  );
-                  dataSource.selectRecordById(id.toString());
-                }}
-              >
-                {name}
-              </Button>
-              {relatedRecords.hasOwnProperty(id) ? (
-                <Timeline features={relatedRecords[id].features}></Timeline>
-              ) : null}
-            </Item>
-          );
-        })}
-      </div>
-    );
-  };
-
   return (
     <Container className="jimu-widget p-3">
       <Header>
         {props.intl.formatMessage({
-          id: "_widgetLabel",
-          defaultMessage: defaultI18nMessages._widgetLabel,
+          id: "header",
+          defaultMessage: defaultI18nMessages.header,
         })}
       </Header>
       {dsConfigured ? (
-        <div>
+        <div style={{ flex: 1, overflow: "auto" }}>
           <DataSourceComponent
             useDataSource={props.useDataSources[0]}
             query={query}
@@ -126,7 +87,23 @@ export default function Widget(props: AllWidgetProps<WidgetProps>) {
             }}
           ></DataSourceComponent>
           {records && relatedRecords ? (
-            renderData()
+            <TimelineComponent
+              records={records}
+              relatedRecords={relatedRecords}
+              onGroupSelected={(id) => {
+                MessageManager.getInstance().publishMessage(
+                  new DataRecordsSelectionChangeMessage(props.id, [
+                    dataSource.getRecordById(id),
+                  ])
+                );
+                dataSource.selectRecordById(id);
+              }}
+              selectedId={
+                dataSource.getSelectedRecordIds().length > 0
+                  ? dataSource.getSelectedRecordIds()[0]
+                  : null
+              }
+            ></TimelineComponent>
           ) : (
             <div>
               {props.intl.formatMessage({

@@ -5,6 +5,7 @@ System.register([], function (_export) {
         _widgetLabel: "Diagrama de Gantt",
         dataSourceTitle: "Fuente",
         selectDataSource: "Un punto feature layer.",
+        header: "Horario de atraque",
       })
     }
   }
