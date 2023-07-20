@@ -98,11 +98,6 @@ export default function Widget(props: AllWidgetProps<WidgetProps>) {
                 );
                 dataSource.selectRecordById(id);
               }}
-              selectedId={
-                dataSource.getSelectedRecordIds().length > 0
-                  ? dataSource.getSelectedRecordIds()[0]
-                  : null
-              }
             ></TimelineComponent>
           ) : (
             <div>

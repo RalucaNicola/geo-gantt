@@ -3,3 +3,8 @@
   height: 60px;
   padding: 0 !important;
 }
+
+.vis-item {
+  border-color: #aaa !important;
+  background-color: #ccc !important;
+}

@@ -11,6 +11,10 @@ import { DataSet } from "vis-data/standalone";
 import ReactDOM from "react-dom";
 import styled from "@emotion/styled";
 
+enum TimelineOptionsZoomKey {
+  ctrlKey = "ctrlKey",
+}
+
 const Button = styled.button`
   border: none;
   width: 100%;
@@ -19,7 +23,7 @@ const Button = styled.button`
   padding: 0 3px;
   &:hover,
   &.selected {
-    background-color: #cfb6f0;
+    background-color: #ccc;
   }
 `;
 
@@ -51,7 +55,6 @@ export default function TimelineComponent({
   records,
   relatedRecords,
   onGroupSelected,
-  selectedId,
 }) {
   const divRef = useRef<HTMLDivElement>();
 
@@ -61,25 +64,25 @@ export default function TimelineComponent({
       const options = {
         orientation: "top",
         verticalScroll: true,
-        zoomKey: "ctrlKey",
+        zoomKey: TimelineOptionsZoomKey.ctrlKey,
         stack: true,
         maxHeight: "100%",
+        selectable: false,
         groupTemplate: (data, element) => {
-          ReactDOM.render(
-            <Button
-              onClick={(evt) => {
-                onGroupSelected(data.id);
-              }}
-            >
-              {data.content}
-            </Button>,
-            element
-          );
+          ReactDOM.render(<Button>{data.content}</Button>, element);
           return null;
         },
       };
-
-      new Timeline(divRef.current, items, groups, options);
+      const timeline = new Timeline(divRef.current, items, groups, options);
+      timeline.on("click", (evt) => {
+        if (evt.what && evt.what === "group-label") {
+          document.querySelectorAll(".selected").forEach((el) => {
+            el.classList.remove("selected");
+          });
+          evt.event.target.classList.add("selected");
+          onGroupSelected(evt.group);
+        }
+      });
     }
   }, [divRef]);
   return <div style={{ height: "100%" }} ref={divRef}></div>;
