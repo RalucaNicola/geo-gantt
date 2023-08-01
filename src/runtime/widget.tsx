@@ -7,9 +7,12 @@ import {
   DataSourceStatus,
   FeatureLayerDataSource,
   FeatureLayerQueryParams,
+  IMConfig,
   IMDataSourceInfo,
+  IMWidgetJson,
   MessageManager,
   React,
+  WidgetInjectedProps,
   WidgetProps,
   jsx,
 } from "jimu-core";
@@ -20,6 +23,7 @@ import styled from "@emotion/styled";
 
 import { useEffect } from "react";
 import TimelineComponent from "./TimelineComponent";
+import { Config } from "../config";
 
 const query = {
   where: "1=1",
@@ -27,52 +31,31 @@ const query = {
   returnGeometry: true,
 } as FeatureLayerQueryParams;
 
-export default function Widget(props: AllWidgetProps<WidgetProps>) {
-  const dsConfigured = props.useDataSources && props.useDataSources.length > 0;
+export default function Widget(props: AllWidgetProps<WidgetProps & WidgetInjectedProps<Config>>) {
+
+  const { endDateField, startDateField, nameField } = props.config as unknown as Config;
   const [dataSource, setDataSource] =
     React.useState<FeatureLayerDataSource>(null);
   const [dataSourceStatus, setDataSourceStatus] =
     React.useState<DataSourceStatus>(null);
   const [records, setRecords] = React.useState<DataRecord[]>(null);
-  const [relatedRecords, setRelatedRecords] = React.useState(null);
-
+  const dsConfigured = props.useDataSources && props.useDataSources.length > 0 && endDateField && startDateField && nameField;
   const Container = styled.div`
     overflow: auto;
     display: flex;
     flex-direction: column;
   `;
 
-  const Header = styled.div`
-    font-size: ${props.theme.sizes[3]};
-  `;
-
   useEffect(() => {
-    if (dataSource && dataSourceStatus === DataSourceStatus.Loaded) {
+    if (dataSource && dataSourceStatus === DataSourceStatus.Loaded && endDateField && startDateField && nameField) {
       const records = dataSource.getRecords();
       setRecords(records);
-      const ids = records.map((record) => record.getId());
-      const relationshipId = dataSource.layer.relationships[0].id;
-      const relationshipQuery = {
-        objectIds: ids,
-        outFields: ["*"],
-        relationshipId: relationshipId,
-      };
-      dataSource.layer
-        .queryRelatedFeatures(relationshipQuery)
-        .then((results) => {
-          setRelatedRecords(results);
-        });
+      console.log(records);
     }
-  }, [dataSource, dataSourceStatus]);
+  }, [dataSource, dataSourceStatus, endDateField, startDateField, nameField]);
 
   return (
     <Container className="jimu-widget p-3">
-      <Header>
-        {props.intl.formatMessage({
-          id: "header",
-          defaultMessage: defaultI18nMessages.header,
-        })}
-      </Header>
       {dsConfigured ? (
         <div style={{ flex: 1, overflow: "auto" }}>
           <DataSourceComponent
@@ -86,10 +69,9 @@ export default function Widget(props: AllWidgetProps<WidgetProps>) {
               setDataSourceStatus(info.status);
             }}
           ></DataSourceComponent>
-          {records && relatedRecords ? (
+          {records ? (
             <TimelineComponent
               records={records}
-              relatedRecords={relatedRecords}
               onGroupSelected={(id) => {
                 MessageManager.getInstance().publishMessage(
                   new DataRecordsSelectionChangeMessage(props.id, [
@@ -98,6 +80,7 @@ export default function Widget(props: AllWidgetProps<WidgetProps>) {
                 );
                 dataSource.selectRecordById(id);
               }}
+              fields={props.config}
             ></TimelineComponent>
           ) : (
             <div>

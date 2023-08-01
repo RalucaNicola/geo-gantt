@@ -21,46 +21,47 @@ const Button = styled.button`
   height: 100%;
   margin: 0;
   padding: 0 3px;
+  background-color: #fff;
   &:hover,
   &.selected {
-    background-color: #ccc;
+    background-color: #ffe49c;
   }
 `;
 
-function generateDataSet(records, relatedRecords) {
+function generateDataSet(records, fields) {
   const groups = new DataSet() as DataSetDataGroup;
   const items = new DataSet() as DataSetDataItem;
   records.forEach((r) => {
-    const name = r.getFieldValue("Name");
+    const name = r.getFieldValue(fields.nameField);
+    const start = r.getFieldValue(fields.startDateField);
+    const end = r.getFieldValue(fields.endDateField);
     const id = r.getId();
     const group = { id: id, content: name };
     groups.add(group);
-    if (relatedRecords.hasOwnProperty(id)) {
-      const features = relatedRecords[id].features;
-      features.forEach((f) => {
-        items.add({
-          id: f.attributes.OBJECTID,
-          group: id,
-          content: f.attributes.Vessel,
-          start: new Date(f.attributes.StartDate),
-          end: new Date(f.attributes.EndDate),
-        });
+    if (start && end) {
+      items.add({
+        id,
+        group: id,
+        content: "",
+        start: new Date(start),
+        end: new Date(end),
       });
     }
+
   });
   return { items, groups };
 }
 
 export default function TimelineComponent({
   records,
-  relatedRecords,
   onGroupSelected,
+  fields
 }) {
   const divRef = useRef<HTMLDivElement>();
 
   useEffect(() => {
     if (divRef.current) {
-      const { groups, items } = generateDataSet(records, relatedRecords);
+      const { groups, items } = generateDataSet(records, fields);
       const options = {
         orientation: "top",
         verticalScroll: true,

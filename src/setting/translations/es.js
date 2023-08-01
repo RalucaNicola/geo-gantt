@@ -4,7 +4,10 @@ System.register([], function (_export) {
       _export({
         _widgetLabel: "Diagrama de Gantt",
         dataSourceTitle: "Fuente",
-        selectDataSource: "Un punto feature layer.",
+        selectDataSource: "Feature layer",
+        selectNameField: "Campo de nombre",
+        selectStartDateField: "Campo de fecha de inicio",
+        selectEndDateField: "Campo de fecha de finalización",
       })
     }
   }
