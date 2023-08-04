@@ -16,8 +16,6 @@ enum TimelineOptionsZoomKey {
   ctrlKey = "ctrlKey",
 }
 
-
-
 function isInViewport(element) {
   const rect = element.getBoundingClientRect();
   return (
@@ -67,6 +65,7 @@ export default function TimelineComponent({
   theme, backgroundColor, fontColor
 }) {
   const [timeline, setTimeline] = React.useState<Timeline>(null);
+  const [style, setStyle] = React.useState<string>("");
   const divRef = useRef<HTMLDivElement>();
 
   const Button = styled.button`
@@ -86,17 +85,34 @@ export default function TimelineComponent({
 
   useEffect(() => {
     if (timeline) {
-      document.querySelectorAll(".vis-item").forEach((element: HTMLDivElement) => {
-        element.style.backgroundColor = backgroundColor;
-        element.style.borderColor = backgroundColor;
-        element.style.color = fontColor;
-      });
-      document.querySelectorAll(".group-button").forEach((element: HTMLButtonElement) => {
-        element.style.color = theme.body.color;
-      });
-      document.querySelectorAll(".vis-text").forEach((element: HTMLDivElement) => {
-        element.style.color = theme.body.color;
-      });
+      setStyle(`
+      .vis-item {
+        background-color: ${backgroundColor};
+        border-color: ${backgroundColor};
+        color: ${fontColor};
+      };
+      .vis-text {
+        color: ${theme.body.color};
+      };
+      .group-button {
+        color: ${theme.body.color};
+      }
+      .group-button:hover, .selected{
+        border-color: ${theme.colors.primary}
+      }
+      `)
+      // timeline.redraw();
+      // document.querySelectorAll(".vis-item").forEach((element: HTMLDivElement) => {
+      //   element.style.backgroundColor = backgroundColor;
+      //   element.style.borderColor = backgroundColor;
+      //   element.style.color = fontColor;
+      // });
+      // document.querySelectorAll(".group-button").forEach((element: HTMLButtonElement) => {
+      //   element.style.color = theme.body.color;
+      // });
+      // document.querySelectorAll(".vis-text").forEach((element: HTMLDivElement) => {
+      //   element.style.color = theme.body.color;
+      // });
     }
   }, [timeline, theme, backgroundColor, fontColor])
 
@@ -128,7 +144,7 @@ export default function TimelineComponent({
         zoomKey: TimelineOptionsZoomKey.ctrlKey,
         stack: true,
         maxHeight: "100%",
-        selectable: true,
+        selectable: false,
         tooltip: {
           followMouse: true
         },
@@ -153,5 +169,5 @@ export default function TimelineComponent({
       }
     }
   }, [divRef]);
-  return <div style={{ height: "100%" }} ref={divRef}></div>;
+  return <div style={{ height: "100%" }} ref={divRef} css={style}></div>;
 }
