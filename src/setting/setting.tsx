@@ -2,17 +2,22 @@
 import { jsx, DataSourceTypes, Immutable, UseDataSource, IMFieldSchema, DataSource, IMWidgetJson, JimuFieldType, WidgetInjectedProps } from "jimu-core";
 import { AllWidgetSettingProps, WidgetSettingProps } from "jimu-for-builder";
 import {
+  MapWidgetSelector,
   SettingRow,
   SettingSection,
 } from "jimu-ui/advanced/setting-components";
 import defaultI18nMessages from "./translations/default";
 import { DataSourceSelector, FieldSelector } from "jimu-ui/advanced/data-source-selector";
-import { Config } from "../config";
+import { IMConfig } from "../config";
+import { Label } from "jimu-ui";
+import { ColorPicker } from "jimu-ui/basic/color-picker";
 
 const dateFieldTypes = Immutable([JimuFieldType.Date]);
 const stringFieldTypes = Immutable([JimuFieldType.String]);
+const presetBackgroundColor = "#0079c1";
+const presetFontColor = "#ffffff";
 
-export default function (props: AllWidgetSettingProps<WidgetSettingProps & WidgetInjectedProps<Config>>) {
+export default function (props: AllWidgetSettingProps<AllWidgetSettingProps<IMConfig>>) {
   const supportedTypes = Immutable([DataSourceTypes.FeatureLayer]);
 
   const onDataSourceChange = (useDataSources: UseDataSource[]) => {
@@ -38,6 +43,26 @@ export default function (props: AllWidgetSettingProps<WidgetSettingProps & Widge
         config: props.config.set(fieldName, null)
       })
     }
+  }
+
+  const onMapWidgetSelected = (ids: string[]) => {
+    props.onSettingChange({
+      id: props.id,
+      useMapWidgetIds: ids
+    })
+  }
+
+  const updateTimelineBackgroundColor = (color: string) => {
+    props.onSettingChange({
+      id: props.id,
+      config: props.config.set('timelineBackgroundColor', color)
+    })
+  }
+  const updateTimelineFontColor = (color: string) => {
+    props.onSettingChange({
+      id: props.id,
+      config: props.config.set('timelineFontColor', color)
+    })
   }
 
   return (
@@ -114,6 +139,54 @@ export default function (props: AllWidgetSettingProps<WidgetSettingProps & Widge
                 widgetId={props.id}
                 types={dateFieldTypes}
               />
+            </SettingRow>
+          </SettingSection>
+          <SettingSection
+            className="data-source-selector-section"
+            title={props.intl.formatMessage({
+              id: "selecMap",
+              defaultMessage: defaultI18nMessages.selectMap,
+            })}>
+            <SettingRow>
+              <MapWidgetSelector
+                onSelect={onMapWidgetSelected}
+                useMapWidgetIds={props.useMapWidgetIds}
+              />
+            </SettingRow>
+          </SettingSection>
+          <SettingSection
+            className="data-source-selector-section"
+            title={props.intl.formatMessage({
+              id: "styling",
+              defaultMessage: defaultI18nMessages.styling,
+            })}>
+            <SettingRow>
+              <Label
+                size="default"
+              >
+                {props.intl.formatMessage({
+                  id: "setBackgroundColor",
+                  defaultMessage: defaultI18nMessages.setBackgroundColor,
+                })}
+              </Label>
+              <ColorPicker
+                style={{ padding: '4' }} width={30} height={26}
+                color={props.config["timelineBackgroundColor"] ? props.config["timelineBackgroundColor"] : presetBackgroundColor}
+                onChange={updateTimelineBackgroundColor} />
+            </SettingRow>
+            <SettingRow>
+              <Label
+                size="default"
+              >
+                {props.intl.formatMessage({
+                  id: "setBackgroundColor",
+                  defaultMessage: defaultI18nMessages.setFontColor,
+                })}
+              </Label>
+              <ColorPicker
+                style={{ padding: '4' }} width={30} height={26}
+                color={props.config["timelineFontColor"] ? props.config["timelineFontColor"] : presetFontColor}
+                onChange={updateTimelineFontColor} />
             </SettingRow>
           </SettingSection>
         </div>
