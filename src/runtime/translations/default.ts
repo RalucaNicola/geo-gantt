@@ -1,6 +1,4 @@
 export default {
-  _widgetLabel: "Gantt Chart",
-  header: "Berth Schedule",
-  loading: "Loading...",
-  configureDataSource: "Please configure data source.",
+  _widgetLabel: "Geo Gantt",
+  configureDataSource: "Please configure data source with a feature layer with start and end date fields.",
 };

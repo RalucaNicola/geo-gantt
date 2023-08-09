@@ -2,8 +2,8 @@ import { type ImmutableObject } from 'seamless-immutable'
 
 export interface Config {
   nameField: string;
-  startDateField: Date;
-  endDateField: Date;
+  startDateField: string;
+  endDateField: string;
   timelineBackgroundColor: string;
   timelineFontColor: string;
 }

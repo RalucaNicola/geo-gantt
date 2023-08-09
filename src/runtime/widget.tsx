@@ -9,8 +9,6 @@ import {
   IMDataSourceInfo,
   MessageManager,
   React,
-  WidgetInjectedProps,
-  WidgetProps,
   jsx,
 } from "jimu-core";
 import "./styles.css";
@@ -35,10 +33,10 @@ const Container = styled.div`
   flex-direction: column;
 `;
 
-export default function Widget(props: AllWidgetProps<WidgetProps & WidgetInjectedProps<Config>>) {
+export default function Widget(props: AllWidgetProps<Config>) {
   const [view, setView] = React.useState(null);
   const useMapWidgetId = props.useMapWidgetIds?.[0];
-  const { endDateField, startDateField, nameField, timelineBackgroundColor, timelineFontColor } = props.config as unknown as Config;
+  const { endDateField, startDateField, nameField, timelineBackgroundColor, timelineFontColor } = props.config as Config;
   const dsConfigured = props.useDataSources && props.useDataSources.length > 0 && endDateField && startDateField && nameField && useMapWidgetId;
 
   const onActiveMapViewChange = (jimuMapView) => {
@@ -62,7 +60,12 @@ export default function Widget(props: AllWidgetProps<WidgetProps & WidgetInjecte
           dataSource.selectRecordById(id);
           const layer = view.map.findLayerById(feature.layer.id);
           feature.layer = layer;
-          view.openPopup({ features: [feature], location: feature.geometry.centroid });
+          if (feature.geometry.extent) {
+            location = feature.geometry.extent.center;
+          } else {
+            location = feature.geometry;
+          }
+          view.openPopup({ features: [feature], location });
         }}
         fields={props.config}
         selectedId={selectedId}

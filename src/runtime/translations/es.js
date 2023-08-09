@@ -2,10 +2,8 @@ System.register([], function (_export) {
   return {
     execute: function () {
       _export({
-        _widgetLabel: "Diagrama de Gantt",
-        dataSourceTitle: "Fuente",
-        selectDataSource: "Un punto feature layer.",
-        header: "Horario de atraque",
+        _widgetLabel: "Geo Gantt",
+        configureDataSource: "Configure la fuente de datos con una capa de entidades con campos de fecha de inicio y finalización.",
       })
     }
   }

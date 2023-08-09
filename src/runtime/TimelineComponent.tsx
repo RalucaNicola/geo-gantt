@@ -18,6 +18,7 @@ enum TimelineOptionsZoomKey {
 
 function isInViewport(element) {
   const rect = element.getBoundingClientRect();
+  console.log(rect.top, rect.right, rect.bottom, rect.left);
   return (
     rect.top >= 0 &&
     rect.left >= 0 &&
@@ -100,19 +101,7 @@ export default function TimelineComponent({
       .group-button:hover, .selected{
         border-color: ${theme.colors.primary}
       }
-      `)
-      // timeline.redraw();
-      // document.querySelectorAll(".vis-item").forEach((element: HTMLDivElement) => {
-      //   element.style.backgroundColor = backgroundColor;
-      //   element.style.borderColor = backgroundColor;
-      //   element.style.color = fontColor;
-      // });
-      // document.querySelectorAll(".group-button").forEach((element: HTMLButtonElement) => {
-      //   element.style.color = theme.body.color;
-      // });
-      // document.querySelectorAll(".vis-text").forEach((element: HTMLDivElement) => {
-      //   element.style.color = theme.body.color;
-      // });
+      `);
     }
   }, [timeline, theme, backgroundColor, fontColor])
 

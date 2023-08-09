@@ -17,7 +17,7 @@ const stringFieldTypes = Immutable([JimuFieldType.String]);
 const presetBackgroundColor = "#0079c1";
 const presetFontColor = "#ffffff";
 
-export default function (props: AllWidgetSettingProps<AllWidgetSettingProps<IMConfig>>) {
+export default function (props: AllWidgetSettingProps<IMConfig>) {
   const supportedTypes = Immutable([DataSourceTypes.FeatureLayer]);
 
   const onDataSourceChange = (useDataSources: UseDataSource[]) => {
@@ -70,8 +70,8 @@ export default function (props: AllWidgetSettingProps<AllWidgetSettingProps<IMCo
       <SettingSection
         className="data-source-selector-section"
         title={props.intl.formatMessage({
-          id: "dataSourceTitle",
-          defaultMessage: defaultI18nMessages.dataSourceTitle,
+          id: "selectDataSource",
+          defaultMessage: defaultI18nMessages.selectDataSource,
         })}
       >
         <SettingRow>
@@ -97,7 +97,7 @@ export default function (props: AllWidgetSettingProps<AllWidgetSettingProps<IMCo
               <FieldSelector
                 useDataSources={props.useDataSources}
                 onChange={(allSelectedFields: IMFieldSchema[]) => onFieldChange(allSelectedFields, "nameField")}
-                selectedFields={props.useDataSources[0].fields || Immutable([props.config["nameField"]])}
+                selectedFields={props.useDataSources[0].fields || Immutable([props.config.nameField])}
                 isDataSourceDropDownHidden={true}
                 useDropdown={true}
                 widgetId={props.id}
@@ -115,7 +115,7 @@ export default function (props: AllWidgetSettingProps<AllWidgetSettingProps<IMCo
               <FieldSelector
                 useDataSources={props.useDataSources}
                 onChange={(allSelectedFields: IMFieldSchema[]) => onFieldChange(allSelectedFields, "startDateField")}
-                selectedFields={props.useDataSources[0].fields || Immutable([props.config["startDateField"]])}
+                selectedFields={props.useDataSources[0].fields || Immutable([props.config.startDateField])}
                 isDataSourceDropDownHidden={true}
                 useDropdown={true}
                 widgetId={props.id}
@@ -133,7 +133,7 @@ export default function (props: AllWidgetSettingProps<AllWidgetSettingProps<IMCo
               <FieldSelector
                 useDataSources={props.useDataSources}
                 onChange={(allSelectedFields: IMFieldSchema[]) => onFieldChange(allSelectedFields, "endDateField")}
-                selectedFields={props.useDataSources[0].fields || Immutable([props.config["endDateField"]])}
+                selectedFields={props.useDataSources[0].fields || Immutable([props.config.endDateField])}
                 isDataSourceDropDownHidden={true}
                 useDropdown={true}
                 widgetId={props.id}
@@ -171,7 +171,7 @@ export default function (props: AllWidgetSettingProps<AllWidgetSettingProps<IMCo
               </Label>
               <ColorPicker
                 style={{ padding: '4' }} width={30} height={26}
-                color={props.config["timelineBackgroundColor"] ? props.config["timelineBackgroundColor"] : presetBackgroundColor}
+                color={props.config.timelineBackgroundColor ? props.config.timelineBackgroundColor : presetBackgroundColor}
                 onChange={updateTimelineBackgroundColor} />
             </SettingRow>
             <SettingRow>
@@ -185,7 +185,7 @@ export default function (props: AllWidgetSettingProps<AllWidgetSettingProps<IMCo
               </Label>
               <ColorPicker
                 style={{ padding: '4' }} width={30} height={26}
-                color={props.config["timelineFontColor"] ? props.config["timelineFontColor"] : presetFontColor}
+                color={props.config.timelineFontColor ? props.config.timelineFontColor : presetFontColor}
                 onChange={updateTimelineFontColor} />
             </SettingRow>
           </SettingSection>
