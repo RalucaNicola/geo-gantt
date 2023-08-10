@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import { jsx, DataSourceTypes, Immutable, UseDataSource, IMFieldSchema, DataSource, IMWidgetJson, JimuFieldType, WidgetInjectedProps } from "jimu-core";
-import { AllWidgetSettingProps, WidgetSettingProps } from "jimu-for-builder";
+import { AllWidgetSettingProps } from "jimu-for-builder";
 import {
   MapWidgetSelector,
   SettingRow,
@@ -14,8 +14,6 @@ import { ColorPicker } from "jimu-ui/basic/color-picker";
 
 const dateFieldTypes = Immutable([JimuFieldType.Date]);
 const stringFieldTypes = Immutable([JimuFieldType.String]);
-const presetBackgroundColor = "#0079c1";
-const presetFontColor = "#ffffff";
 
 export default function (props: AllWidgetSettingProps<IMConfig>) {
   const supportedTypes = Immutable([DataSourceTypes.FeatureLayer]);
@@ -171,7 +169,7 @@ export default function (props: AllWidgetSettingProps<IMConfig>) {
               </Label>
               <ColorPicker
                 style={{ padding: '4' }} width={30} height={26}
-                color={props.config.timelineBackgroundColor ? props.config.timelineBackgroundColor : presetBackgroundColor}
+                color={props.config.timelineBackgroundColor}
                 onChange={updateTimelineBackgroundColor} />
             </SettingRow>
             <SettingRow>
@@ -185,7 +183,7 @@ export default function (props: AllWidgetSettingProps<IMConfig>) {
               </Label>
               <ColorPicker
                 style={{ padding: '4' }} width={30} height={26}
-                color={props.config.timelineFontColor ? props.config.timelineFontColor : presetFontColor}
+                color={props.config.timelineFontColor}
                 onChange={updateTimelineFontColor} />
             </SettingRow>
           </SettingSection>

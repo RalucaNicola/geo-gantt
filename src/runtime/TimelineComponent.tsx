@@ -18,7 +18,6 @@ enum TimelineOptionsZoomKey {
 
 function isInViewport(element) {
   const rect = element.getBoundingClientRect();
-  console.log(rect.top, rect.right, rect.bottom, rect.left);
   return (
     rect.top >= 0 &&
     rect.left >= 0 &&
@@ -47,7 +46,7 @@ function generateDataSet(records, fields, selectedId) {
       items.add({
         id,
         group: id,
-        content: "",
+        content: timePeriod,
         start: new Date(start),
         end: new Date(end),
         title: timePeriod

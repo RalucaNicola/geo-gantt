@@ -2,6 +2,6 @@
   "nameField": "",
   "startDateField": "",
   "endDateField": "",
-  "timelineBackgroundColor": "",
-  "timelineFontColor": ""
+  "timelineBackgroundColor": "#0079c1",
+  "timelineFontColor": "#ffffff"
 }
