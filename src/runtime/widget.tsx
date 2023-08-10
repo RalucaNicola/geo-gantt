@@ -60,6 +60,7 @@ export default function Widget(props: AllWidgetProps<Config>) {
           dataSource.selectRecordById(id);
           const layer = view.map.findLayerById(feature.layer.id);
           feature.layer = layer;
+          let location = null;
           if (feature.geometry.extent) {
             location = feature.geometry.extent.center;
           } else {

@@ -47,7 +47,7 @@ function generateDataSet(records, fields, selectedId) {
       items.add({
         id,
         group: id,
-        content: timePeriod,
+        content: "",
         start: new Date(start),
         end: new Date(end),
         title: timePeriod
@@ -78,6 +78,7 @@ export default function TimelineComponent({
     background-color: transparent;
     color: ${theme.body.color};
     text-align: left;
+    max-width: 150px;
     &:hover,
     &.selected {
       border-color: ${theme.colors.primary}
