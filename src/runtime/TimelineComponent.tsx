@@ -124,6 +124,13 @@ export default function TimelineComponent({
     }
   }, [selectedId]);
 
+  // if user changes field in the settings panel, the widget will update and re-render
+  useEffect(() => {
+    if (timeline) {
+      const { groups, items } = generateDataSet(records, fields);
+      timeline.setData({ groups, items });
+    }
+  }, [fields]);
 
   // effect that initializes the timeline
   useEffect(() => {
