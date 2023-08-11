@@ -16,6 +16,7 @@ const dateFieldTypes = Immutable([JimuFieldType.Date]);
 const stringFieldTypes = Immutable([JimuFieldType.String]);
 
 export default function (props: AllWidgetSettingProps<IMConfig>) {
+  console.log("setting props", props);
   const supportedTypes = Immutable([DataSourceTypes.FeatureLayer]);
 
   const onDataSourceChange = (useDataSources: UseDataSource[]) => {
@@ -75,7 +76,6 @@ export default function (props: AllWidgetSettingProps<IMConfig>) {
         <SettingRow>
           <DataSourceSelector
             types={supportedTypes}
-            useDataSourcesEnabled
             mustUseDataSource
             useDataSources={props.useDataSources}
             onChange={onDataSourceChange}
@@ -95,7 +95,7 @@ export default function (props: AllWidgetSettingProps<IMConfig>) {
               <FieldSelector
                 useDataSources={props.useDataSources}
                 onChange={(allSelectedFields: IMFieldSchema[]) => onFieldChange(allSelectedFields, "nameField")}
-                selectedFields={props.useDataSources[0].fields || Immutable([props.config.nameField])}
+                selectedFields={Immutable([props.config.nameField])}
                 isDataSourceDropDownHidden={true}
                 useDropdown={true}
                 widgetId={props.id}
@@ -113,7 +113,7 @@ export default function (props: AllWidgetSettingProps<IMConfig>) {
               <FieldSelector
                 useDataSources={props.useDataSources}
                 onChange={(allSelectedFields: IMFieldSchema[]) => onFieldChange(allSelectedFields, "startDateField")}
-                selectedFields={props.useDataSources[0].fields || Immutable([props.config.startDateField])}
+                selectedFields={Immutable([props.config.startDateField])}
                 isDataSourceDropDownHidden={true}
                 useDropdown={true}
                 widgetId={props.id}
@@ -131,7 +131,7 @@ export default function (props: AllWidgetSettingProps<IMConfig>) {
               <FieldSelector
                 useDataSources={props.useDataSources}
                 onChange={(allSelectedFields: IMFieldSchema[]) => onFieldChange(allSelectedFields, "endDateField")}
-                selectedFields={props.useDataSources[0].fields || Immutable([props.config.endDateField])}
+                selectedFields={Immutable([props.config.endDateField])}
                 isDataSourceDropDownHidden={true}
                 useDropdown={true}
                 widgetId={props.id}

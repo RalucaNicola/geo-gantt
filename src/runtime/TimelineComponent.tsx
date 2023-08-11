@@ -26,7 +26,7 @@ function isInViewport(element) {
   );
 }
 
-function generateDataSet(records, fields, selectedId) {
+function generateDataSet(records, fields) {
   const groups = new DataSet() as DataSetDataGroup;
   const items = new DataSet() as DataSetDataItem;
   records.forEach((r) => {
@@ -36,7 +36,6 @@ function generateDataSet(records, fields, selectedId) {
     const id = r.getId();
     const group = {
       id: id, content: name,
-      selected: selectedId ? id === selectedId : false
     };
     groups.add(group);
     if (start && end) {
@@ -83,7 +82,7 @@ export default function TimelineComponent({
       border-color: ${theme.colors.primary}
     }
   `;
-
+  // when the theme changes, update the timeline style
   useEffect(() => {
     if (timeline) {
       setStyle(`
@@ -103,8 +102,9 @@ export default function TimelineComponent({
       }
       `);
     }
-  }, [timeline, theme, backgroundColor, fontColor])
+  }, [timeline, theme, backgroundColor, fontColor]);
 
+  // show selected item as highlighted when it changes
   useEffect(() => {
     if (timeline) {
       const selectedElement = document.querySelector("button.selected") as HTMLButtonElement;
@@ -122,11 +122,13 @@ export default function TimelineComponent({
       }
 
     }
-  }, [timeline, selectedId]);
+  }, [selectedId]);
 
+
+  // effect that initializes the timeline
   useEffect(() => {
     if (divRef.current) {
-      const { groups, items } = generateDataSet(records, fields, selectedId);
+      const { groups, items } = generateDataSet(records, fields);
       const options = {
         orientation: "top",
         verticalScroll: true,
