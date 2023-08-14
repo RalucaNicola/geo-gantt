@@ -11,14 +11,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/RalucaNicola/gantt-chart-widget.git"
+    "url": "git+https://github.com/RalucaNicola/geo-gantt.git"
   },
   "author": "Raluca Nicola",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/RalucaNicola/gantt-chart-widget/issues"
+    "url": "https://github.com/RalucaNicola/geo-gantt/issues"
   },
-  "homepage": "https://github.com/RalucaNicola/gantt-chart-widget#readme",
+  "homepage": "https://github.com/RalucaNicola/geo-gantt#readme",
   "dependencies": {
     "vis-timeline": "^7.7.2"
   }
