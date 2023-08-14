@@ -38,7 +38,6 @@ export default function Widget(props: AllWidgetProps<Config>) {
   const useMapWidgetId = props.useMapWidgetIds?.[0];
   const { endDateField, startDateField, nameField, timelineBackgroundColor, timelineFontColor } = props.config as Config;
   const dsConfigured = props.useDataSources && props.useDataSources.length > 0 && endDateField && startDateField && nameField && useMapWidgetId;
-  console.log("widget props", props);
   const onActiveMapViewChange = (jimuMapView) => {
     setView(jimuMapView.view);
   }

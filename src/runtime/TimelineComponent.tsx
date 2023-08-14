@@ -104,7 +104,7 @@ export default function TimelineComponent({
     }
   }, [timeline, theme, backgroundColor, fontColor]);
 
-  // show selected item as highlighted when it changes
+  // show selected item as highlighted when it changes and scroll to it
   useEffect(() => {
     if (timeline) {
       const selectedElement = document.querySelector("button.selected") as HTMLButtonElement;
